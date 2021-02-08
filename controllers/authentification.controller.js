@@ -33,23 +33,16 @@ class AuthentificationController {
     /***
      *Retrieve the user by the input login. If the input login is an email, retrieve by email and password.
      *Other, we verify if the input login is a pseudo.
-     * @param email
-     * @param password
+     * @param login
      * Retrieve the user from the database
      * @returns {Promise<Session> | null}
      */
-    static async login(email) {
-        let user;
-        if (SecurityUtil.verifEmail(email.toLowerCase())) {
-            user = await User.findOne({
-                where: {
-                    email: email.toLowerCase(),
-                }
-            });
-        }
-        if (!user) {
-            throw "Please verify your login";
-        }
+    static async login(login) {
+        const user = await User.findOne({
+            where: {
+                email: email.toLowerCase(),
+            }
+        });
         let session = await this.sessionOfUser(user.id);
         if(!session){
             const token = await SecurityUtil.randomToken();
@@ -109,6 +102,20 @@ class AuthentificationController {
                     UserId : id
                 }
             }]
+        });
+    }
+
+
+    /***
+     *Retrieve the user through its login
+     * @param login
+     * @returns {Promise<User> | null}
+     */
+    static async accountOfUser(login) {
+        return await User.findOne({
+            where: {
+                login: login
+            }
         });
     }
 }
