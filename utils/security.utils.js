@@ -48,18 +48,6 @@ class SecurityUtils {
         let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*\\-_/]).{8,}$/;
         return password.match(regex) != null;
     }
-
-    /***
-     * Verify the composition of the pseudo string. If it is too short, too long or have unwanted characters, it will return false.
-     * @param pseudo
-     * @returns {boolean}
-     */
-    static verifPseudoComposition(pseudo){
-        let regex = /^([a-zA-Z0-9-_#]{5,15})$/;
-        return pseudo.match(regex) != null;
-    }
-
-
 }
 
 module.exports = SecurityUtils;

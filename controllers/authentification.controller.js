@@ -8,25 +8,15 @@ class AuthentificationController {
 
     /***
      *Create the user in the database if the information are correct.
-     * @param email
-     * @param password
+     * @param login
      * @param type
      * @returns {Promise<User>}
      */
-    static async register(email, password, type = "Members") {
-        email = email.toLowerCase();
-        if (!SecurityUtil.verifPasswordStrength(password)) {
-            throw "Please verify the composition of your password. \n" +
-            "The password should contain at least a lowercase, an uppercase, a special character,\n" +
-            " a number and have a length of at least 8";
-        }
-        if (!SecurityUtil.verifEmail(email)) {
-            throw "Please verify the composition of the email address";
-        }
+    static async register(login, type = "Members") {
+        login = login.toLowerCase();
         return User.create({
             id: null,
-            email,
-            password: SecurityUtil.hashString(password),
+            login,
             type
         });
     }
@@ -48,13 +38,12 @@ class AuthentificationController {
      * Retrieve the user from the database
      * @returns {Promise<Session> | null}
      */
-    static async login(email, password) {
+    static async login(email) {
         let user;
         if (SecurityUtil.verifEmail(email.toLowerCase())) {
-            const user = await User.findOne({
+            user = await User.findOne({
                 where: {
                     email: email.toLowerCase(),
-                    password: SecurityUtil.hashString(password)
                 }
             });
         }
@@ -122,7 +111,6 @@ class AuthentificationController {
             }]
         });
     }
-
 }
 
 module.exports = AuthentificationController;

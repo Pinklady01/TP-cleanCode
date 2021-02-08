@@ -5,18 +5,16 @@ const AuthentificationMiddleware = require('../middlewares').AuthentificationMid
 module.exports = function(app) {
 
     app.post('/api/register', bodyParser.json(), async (req, res) => {
-        if(req.body.email && req.body.password) {
+        if(req.body.login) {
             try{
                 let user;
                 if(req.body.type){
-                    user = await AuthentificationController.register(req.body.email,
-                        req.body.password,
+                    user = await AuthentificationController.register(req.body.login,
                         req.body.type);
                     res.status(201).json(user);
                 }
                 if(!req.body.type){
-                    user = await AuthentificationController.register(req.body.email,
-                        req.body.password);
+                    user = await AuthentificationController.register(req.body.login);
                     res.status(201).json(user);
                 }
             } catch(err) {
@@ -24,24 +22,23 @@ module.exports = function(app) {
                 res.status(409).end();
             }
         }
-        if(!req.body.email || !req.body.password){
+        if(!req.body.login){
             res.status(400).end();
         }
     });
 
     app.post('/api/createAdmin', AuthentificationMiddleware.authentification(), bodyParser.json(), async (req, res) => {
-        if(req.body.email && req.body.password) {
+        if(req.body.login) {
             try{
                 let user;
-                user = await AuthentificationController.register(req.body.email,
-                    req.body.password,
+                user = await AuthentificationController.register(req.body.login,
                     "Admin");
                 res.status(201).json(user);
             } catch(err) {
                 console.log(err);
                 res.status(409).end();
             }
-            if(!req.body.email || !req.body.password) {
+            if(!req.body.login) {
                 res.status(400).end();
             }
         }
@@ -50,7 +47,7 @@ module.exports = function(app) {
     app.post('/api/login', bodyParser.json(), async (req, res) => {
         if(req.body.login && req.body.password) {
             try  {
-                const session = await AuthentificationController.login(req.body.login, req.body.password);
+                const session = await AuthentificationController.login(req.body.login);
                 if(session) {
                     res.status(201).json(session);
                 } else {
@@ -61,7 +58,7 @@ module.exports = function(app) {
                 res.status(500).end();
             }
         }
-        if(!req.body.login || !req.body.password) {
+        if(!req.body.login) {
             res.status(400).end();
         }
     });
