@@ -11,22 +11,23 @@ services:
       - PORT=${PORT:-3000}
       - ENVIRONMENT=${ENVIRONMENT:-dev}
       - POSTGRES_HOST=${DB_HOST:-db}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-cleancode}
-      - POSTGRES_USER=${DB_USER:-cleancode}
-      - POSTGRES_DB=${DB_NAME:-cln}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-clean}
+      - POSTGRES_USER=${DB_USER:-clean}
+      - POSTGRES_DB=${DB_NAME:-clean}
       - POSTGRES_PORT=${DB_PORT:-5432}
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "${PORT:-4000}:${PORT:-4000}"
+      - "${PORT:-3000}:${PORT:-3000}"
+    command: /bin/sh -c 'npm run start'
   db:
     restart: always
     image: postgres:latest
     environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-cleancode}
-      - POSTGRES_USER=${DB_USER:-cleancode}
-      - POSTGRES_DB=${DB_NAME:-cln}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-clean}
+      - POSTGRES_USER=${DB_USER:-clean}
+      - POSTGRES_DB=${DB_NAME:-clean}
     volumes:
       - dbdata:/var/lib/postgresql/data
     ports:
