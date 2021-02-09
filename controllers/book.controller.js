@@ -58,14 +58,14 @@ class BookController{
      * @param id_book
      * @returns {Promise<Book>}
      */
-    static async retrieveGameByID(id_book) {
+    static async retrieveBookByID(id_book) {
         const book = await Book.findOne({
             where: {
                 id: id_book,
             }
         });
         if(!book) {
-            throw "The game " + id_game +" doesn't exist";
+            throw "The book " + id_book +" doesn't exist";
         }
         return book;
     }

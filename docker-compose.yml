@@ -20,7 +20,6 @@ services:
       - /usr/src/app/node_modules
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
-    command: /bin/sh -c 'npm run start'
   db:
     restart: always
     image: postgres:latest

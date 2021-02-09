@@ -22,7 +22,7 @@ var assert = require('assert');
 describe('User', function () {
     describe('#register()', function () {
         it('should create a user without error', function () {
-            AuthentificationController.register('testBDD@verify.fr', 'testtest12', 'MrTest')
+            AuthentificationController.register('librarian', 'Admin')
                 .then(function(user) {
                     // your user assertions
                     console.log(user);
@@ -35,7 +35,7 @@ describe('User', function () {
 
     describe('#registerError()', function () {
         it('should throw an error when creating a user', function () {
-            AuthentificationController.register('testBDD@verify.fr', '')
+            AuthentificationController.register('testBDD@verify.fr')
                 .then(function(err) {
                     // your user assertions
                     console.err(err);
