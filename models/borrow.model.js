@@ -16,7 +16,8 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: false
     });
     Borrow.associate = (models) => {
-        User.hasOne(models.Book , { onDelete: 'cascade' , timestamps: false});
+        Borrow.belongsToMany(models.User , {through: 'UserBorrow',  onDelete: 'cascade' , timestamps: false});
+        Borrow.hasOne(models.Book , { onDelete: 'cascade' , timestamps: false});
     };
     return Borrow;
 };

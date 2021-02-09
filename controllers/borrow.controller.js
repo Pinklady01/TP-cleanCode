@@ -1,9 +1,5 @@
 const models = require('../models');
-const User = models.User;
 const Borrow = models.Borrow;
-const AuthentificationController = require('authentification.controller');
-const BookController = require('book.controller');
-const SecurityUtil = require('../utils').SecurityUtil;
 const { Op } = require('sequelize');
 
 class BorrowController {
@@ -19,7 +15,7 @@ class BorrowController {
             id: null,
             dateEmprunt: null,
         });
-        borrow.set(book);
+        await borrow.set(book);
         await user.add(borrow);
         return Borrow;
     }
@@ -32,12 +28,21 @@ class BorrowController {
      * @returns {Promise<Borrow>}
      */
     static async userBorrowBook(login, bookName, bookAuthor) {
-        const user = AuthentificationController.accountOfUser(login);
-        let borrows = user.getBorrows();
+        const user = await User.findOne({
+            where: {
+                login: login
+            }
+        });
+        let borrows = await user.getBorrows();
         if(borrows.length < 3){
-            const book = await BookController.retrieveBook(bookName, bookAuthor);
+            const book = await Book.findOne({
+                where: {
+                    name: name,
+                    author: author
+                }
+            });
             await this.saveBorrow(user, book);
-            borrows = user.getBorrows();
+            borrows = await user.getBorrows();
         }
         return borrows;
     }

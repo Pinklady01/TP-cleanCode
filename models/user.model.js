@@ -17,7 +17,6 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: false
     });
     User.associate = (models) => {
-        User.hasMany(models.Borrow , {through: 'UserBorrow',  onDelete: 'cascade' , timestamps: false});
         User.hasOne(models.Session , { onDelete: 'cascade' , timestamps: false});
     };
     return User;

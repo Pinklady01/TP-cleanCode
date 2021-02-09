@@ -1,5 +1,5 @@
 module.exports = {
     AuthentificationController: require('./authentification.controller'),
     BookController: require('./book.controller'),
-    BorrowController: require('./borrow.controller.js')
+    BorrowController: require('./borrow.controller')
 };
