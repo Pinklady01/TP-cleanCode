@@ -1,5 +1,7 @@
 const models = require('../models');
 const Borrow = models.Borrow;
+const User = models.User;
+const Book = models.Book;
 const { Op } = require('sequelize');
 
 class BorrowController {
@@ -16,8 +18,24 @@ class BorrowController {
             dateEmprunt: null,
         });
         await borrow.set(book);
-        await user.add(borrow);
+        await borrow.setUser(user);
+        await book.setBorrow(borrow);
         return Borrow;
+    }
+
+    /***
+     * Delete borrow
+     * @param user
+     * @param book
+     * @returns {Promise<Borrow>}
+     */
+    static async deleteBorrow(user, book) {
+        await Borrow.destroy({
+            where:{
+                UserId : user.id,
+                BookId: book.id
+            }
+        });
     }
 
     /***
@@ -28,21 +46,24 @@ class BorrowController {
      * @returns {Promise<Borrow>}
      */
     static async userBorrowBook(login, bookName, bookAuthor) {
-        const user = await User.findOne({
-            where: {
-                login: login
-            }
-        });
-        let borrows = await user.getBorrows();
+        const user = await this.retrieveUser(login);
+        let borrows;
+        if(user){
+            borrows = await Borrow.findAll({
+                where: {
+                    UserId: user.id
+                }
+            });
+        }
+        console.log(borrows.length);
         if(borrows.length < 3){
             const book = await Book.findOne({
                 where: {
-                    name: name,
-                    author: author
+                    name: bookName,
+                    author: bookAuthor
                 }
             });
             await this.saveBorrow(user, book);
-            borrows = await user.getBorrows();
         }
         return borrows;
     }
@@ -62,6 +83,28 @@ class BorrowController {
                 }
             }
         });
+    }
+
+    /***
+     * retrieve a user from its login
+     * @param login
+     * @returns {Promise<User>}
+     */
+    static async retrieveUser(login) {
+        return await User.findOne({
+            where: {
+                login: login.toLowerCase()
+            }
+        });
+    }
+
+    /***
+     * Return the borrow of a user
+     * @returns {Promise<Borrow>}
+     */
+    static async borrowOfAUser(login) {
+        const user = this.retrieveUser(login);
+        return await user.getBorrows();
     }
 
 

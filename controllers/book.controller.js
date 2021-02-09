@@ -13,7 +13,7 @@ class BookController{
         return await Book.create({
             id: null,
             name,
-            author: 0
+            author: author
         });
     }
 

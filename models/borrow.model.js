@@ -5,7 +5,6 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-    }, {
         dateEmprunt:{
             type: DataTypes.DATE,
             defaultValue: new Date()
@@ -15,9 +14,9 @@ module.exports = function(sequelize, DataTypes) {
         underscored: true,
         timestamps: false
     });
+
     Borrow.associate = (models) => {
-        Borrow.belongsToMany(models.User , {through: 'UserBorrow',  onDelete: 'cascade' , timestamps: false});
-        Borrow.hasOne(models.Book , { onDelete: 'cascade' , timestamps: false});
+        Borrow.belongsTo(models.User);
     };
     return Borrow;
 };

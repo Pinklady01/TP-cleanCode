@@ -40,7 +40,7 @@ class AuthentificationController {
     static async login(login) {
         const user = await User.findOne({
             where: {
-                email: email.toLowerCase(),
+                login: login.toLowerCase(),
             }
         });
         let session = await this.sessionOfUser(user.id);
@@ -114,7 +114,7 @@ class AuthentificationController {
     static async accountOfUser(login) {
         return await User.findOne({
             where: {
-                login: login
+                login: login.toLowerCase()
             }
         });
     }

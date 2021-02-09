@@ -25,7 +25,7 @@ module.exports = function(app) {
         }
     });
 
-    app.post('/api/book/retrieve/getBooks', bodyParser.json(), async (req, res) => {
+    app.get('/api/book/retrieve/getBooks', bodyParser.json(), async (req, res) => {
         const books = await BookController.retrieveAllBooks();
         res.status(200).json(books);
     });

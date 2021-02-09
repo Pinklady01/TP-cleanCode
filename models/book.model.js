@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Book', {
+    const Book =  sequelize.define('Book', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -16,4 +16,8 @@ module.exports = function(sequelize, DataTypes) {
         underscored: true,
         timestamps: false
     });
+    Book.associate = (models) => {
+        Book.belongsTo(models.Borrow);
+    };
+    return Book;
 };

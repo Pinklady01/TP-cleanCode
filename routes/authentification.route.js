@@ -33,7 +33,7 @@ module.exports = function(app) {
 
     app.post('/api/login', bodyParser.json(), async (req, res) => {
         let session;
-        if(req.body.login && req.body.password) {
+        if(req.body.login) {
             session = await AuthentificationController.login(req.body.login);
         }
         if(session) {
@@ -41,6 +41,14 @@ module.exports = function(app) {
         }
         if(!req.body.login) {
             res.status(400).end();
+        }
+        res.status(401).end();
+    });
+
+    app.post('/api/retrieveUser', bodyParser.json(), async (req, res) => {
+        if(req.body.login) {
+            const user = await AuthentificationController.accountOfUser(req.body.login);
+            res.status(200).json(user);
         }
         res.status(401).end();
     });
