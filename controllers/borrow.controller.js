@@ -69,7 +69,7 @@ class BorrowController {
     }
 
     /***
-     * Save a book loan to a member
+     * Get books to be returned
      * @returns {Promise<Borrow>}
      */
     static async bookToBeReturned() {
@@ -83,6 +83,14 @@ class BorrowController {
                 }
             }
         });
+    }
+
+    /***
+     * Get all borrowed book
+     * @returns {Promise<Borrow>}
+     */
+    static async getBorrows() {
+        return await Borrow.findAll();
     }
 
     /***

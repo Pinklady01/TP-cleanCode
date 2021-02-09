@@ -1,10 +1,11 @@
 const BookController = require('../controllers').BookController;
+const AuthentificationMiddleware = require('../middlewares').AuthentificationMiddleware;
 
 const bodyParser = require('body-parser');
 
 module.exports = function(app) {
 
-    app.post('/api/book/new-book', bodyParser.json(), async (req, res) => {
+    app.post('/api/book/new-book', AuthentificationMiddleware.authentification(), bodyParser.json(), async (req, res) => {
         if (req.body.name && req.body.author) {
             const book = await BookController.addBook(req.body.name,
                 req.body.author);
@@ -30,7 +31,7 @@ module.exports = function(app) {
         res.status(200).json(books);
     });
 
-    app.post('/api/user/retrieve/book', bodyParser.json(), async (req, res) => {
+    app.post('/api/user/retrieve/book',AuthentificationMiddleware.authentification(), bodyParser.json(), async (req, res) => {
         if (req.id) {
             const book = await BookController.retrieveAllBookOfUser(req.body.id);
             res.status(200).json(book);
@@ -40,7 +41,7 @@ module.exports = function(app) {
         }
     });
 
-    app.delete('/api/book/delete', bodyParser.json(), async (req, res) => {
+    app.delete('/api/book/delete', AuthentificationMiddleware.authentification(), bodyParser.json(), async (req, res) => {
         if (req.body.name && req.body.author) {
             const book = await BookController.delete(req.body.name, req.body.author);
             res.status(200).json(book);

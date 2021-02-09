@@ -45,7 +45,7 @@ module.exports = function(app) {
         res.status(401).end();
     });
 
-    app.post('/api/retrieveUser', bodyParser.json(), async (req, res) => {
+    app.post('/api/retrieveUser',AuthentificationMiddleware.authentification() , bodyParser.json(), async (req, res) => {
         if(req.body.login) {
             const user = await AuthentificationController.accountOfUser(req.body.login);
             res.status(200).json(user);
